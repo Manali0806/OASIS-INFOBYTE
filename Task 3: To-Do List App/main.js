@@ -1,137 +1,62 @@
-const list_el = document.getElementById("list");
-const create_btn_el = document.getElementById("create");
+window.addEventListener('load', () => {
+	const form = document.querySelector("#new-task-form");
+	const input = document.querySelector("#new-task-input");
+	const list_el = document.querySelector("#tasks");
 
-let todos = [];
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
 
-create_btn_el.addEventListener('click', CreateNewTodo);
+		const task = input.value;
 
-function CreateNewTodo () {
-	const item = {
-		id: new Date().getTime(),
-		text: "",
-		complete: false
-	}
+		const task_el = document.createElement('div');
+		task_el.classList.add('task');
 
-	todos.unshift(item);
+		const task_content_el = document.createElement('div');
+		task_content_el.classList.add('content');
 
-	const { item_el, input_el } = CreateTodoElement(item);
+		task_el.appendChild(task_content_el);
 
-	list_el.prepend(item_el);
+		const task_input_el = document.createElement('input');
+		task_input_el.classList.add('text');
+		task_input_el.type = 'text';
+		task_input_el.value = task;
+		task_input_el.setAttribute('readonly', 'readonly');
 
-	input_el.removeAttribute("disabled");
-	input_el.focus();
+		task_content_el.appendChild(task_input_el);
 
-	Save();
-}
+		const task_actions_el = document.createElement('div');
+		task_actions_el.classList.add('actions');
+		
+		const task_edit_el = document.createElement('button');
+		task_edit_el.classList.add('edit');
+		task_edit_el.innerText = 'Edit';
 
-/* <div class="item">
-	<input type="checkbox" />
-	<input 
-		type="text" 
-		value="Todo content goes here" 
-		disabled />
-	<div class="actions">
-		<button class="material-icons">edit</button>
-		<button class="material-icons remove-btn">remove_circle</button>
-	</div>
-</div> */
-function CreateTodoElement(item) {
-	const item_el = document.createElement("div");
-	item_el.classList.add("item");
+		const task_delete_el = document.createElement('button');
+		task_delete_el.classList.add('delete');
+		task_delete_el.innerText = 'Delete';
 
-	const checkbox = document.createElement("input");
-	checkbox.type = "checkbox";
-	checkbox.checked = item.complete;
+		task_actions_el.appendChild(task_edit_el);
+		task_actions_el.appendChild(task_delete_el);
 
-	if (item.complete) {
-		item_el.classList.add("complete");
-	}
+		task_el.appendChild(task_actions_el);
 
-	const input_el = document.createElement("input");
-	input_el.type = "text";
-	input_el.value = item.text;
-	input_el.setAttribute("disabled", "");
+		list_el.appendChild(task_el);
 
-	const actions_el = document.createElement("div");
-	actions_el.classList.add("actions");
+		input.value = '';
 
-	const edit_btn_el = document.createElement("button");
-	edit_btn_el.classList.add("material-icons");
-	edit_btn_el.innerText = "edit";
+		task_edit_el.addEventListener('click', (e) => {
+			if (task_edit_el.innerText.toLowerCase() == "edit") {
+				task_edit_el.innerText = "Save";
+				task_input_el.removeAttribute("readonly");
+				task_input_el.focus();
+			} else {
+				task_edit_el.innerText = "Edit";
+				task_input_el.setAttribute("readonly", "readonly");
+			}
+		});
 
-	const remove_btn_el = document.createElement("button");
-	remove_btn_el.classList.add("material-icons", "remove-btn");
-	remove_btn_el.innerText = "remove_circle";
-
-	actions_el.append(edit_btn_el);
-	actions_el.append(remove_btn_el);
-
-	item_el.append(checkbox);
-	item_el.append(input_el);
-	item_el.append(actions_el);
-
-	// EVENTS
-	checkbox.addEventListener("change", () => {
-		item.complete = checkbox.checked;
-
-		if (item.complete) {
-			item_el.classList.add("complete");
-		} else {
-			item_el.classList.remove("complete");
-		}
-
-		Save();
+		task_delete_el.addEventListener('click', (e) => {
+			list_el.removeChild(task_el);
+		});
 	});
-
-	input_el.addEventListener("input", () => {
-		item.text = input_el.value;
-	});
-
-	input_el.addEventListener("blur", () => {
-		input_el.setAttribute("disabled", "");
-		Save();
-	});
-
-	edit_btn_el.addEventListener("click", () => {
-		input_el.removeAttribute("disabled");
-		input_el.focus();
-	});
-
-	remove_btn_el.addEventListener("click", () => {
-		todos = todos.filter(t => t.id != item.id);
-
-		item_el.remove();
-
-		Save();
-	});
-
-	return { item_el, input_el, edit_btn_el, remove_btn_el }
-}
-
-function DisplayTodos() {
-	Load();
-
-	for (let i = 0; i < todos.length; i++) {
-		const item = todos[i];
-
-		const { item_el } = CreateTodoElement(item);
-
-		list_el.append(item_el);
-	}
-}
-
-DisplayTodos();
-
-function Save() {
-	const save = JSON.stringify(todos);
-	
-	localStorage.setItem("my_todos", save);
-}
-
-function Load() {
-	const data = localStorage.getItem("my_todos");
-
-	if (data) {
-		todos = JSON.parse(data);
-	}
-}
+});
