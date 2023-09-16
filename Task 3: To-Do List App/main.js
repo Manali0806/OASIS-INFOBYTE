@@ -1,6 +1,7 @@
 window.addEventListener('load', () => {
     const form = document.querySelector("#new-task-form");
     const input = document.querySelector("#new-task-input");
+	const inputDescription = document.querySelector("#new-task-input-description");
     const incompleteList = document.querySelector("#incomplete-tasks");
     const completedList = document.querySelector("#completed-tasks");
 
@@ -8,17 +9,18 @@ window.addEventListener('load', () => {
         e.preventDefault();
 
         const taskText = input.value;
+        const taskDescription = inputDescription.value; // Get the task description
         const taskDateTime = new Date().toLocaleString(); // Current date and time
-         // Replace with your task description
 
-        const taskElement = createTaskElement(taskText, taskDateTime);
+        const taskElement = createTaskElement(taskText, taskDescription, taskDateTime);
 
         incompleteList.appendChild(taskElement);
 
         input.value = '';
+		inputDescription.value = '';
     });
 
-    function createTaskElement(text, dateTime, description) {
+    function createTaskElement(text, description, dateTime) {
         const taskElement = document.createElement('div');
         taskElement.classList.add('task');
 
@@ -27,12 +29,12 @@ window.addEventListener('load', () => {
 
         const taskDescriptionElement = document.createElement('p');
         taskDescriptionElement.classList.add('description');
-        taskDescriptionElement.textContent = description;
+        taskDescriptionElement.textContent = `Description: ${description}`; // Display the task description
 
         const taskTextElement = document.createElement('input');
         taskTextElement.classList.add('text');
         taskTextElement.type = 'text';
-        taskTextElement.value = text;
+        taskTextElement.value = `Task: ${text}`; // Display the task name
         taskTextElement.setAttribute('readonly', 'readonly');
 
         const taskDateTimeElement = document.createElement('span');
