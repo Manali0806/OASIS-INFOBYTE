@@ -1,62 +1,75 @@
 window.addEventListener('load', () => {
-	const form = document.querySelector("#new-task-form");
-	const input = document.querySelector("#new-task-input");
-	const list_el = document.querySelector("#tasks");
+    const form = document.querySelector("#new-task-form");
+    const input = document.querySelector("#new-task-input");
+    const incompleteList = document.querySelector("#incomplete-tasks");
+    const completedList = document.querySelector("#completed-tasks");
 
-	form.addEventListener('submit', (e) => {
-		e.preventDefault();
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-		const task = input.value;
+        const taskText = input.value;
+        const taskDateTime = new Date().toLocaleString(); // Current date and time
+         // Replace with your task description
 
-		const task_el = document.createElement('div');
-		task_el.classList.add('task');
+        const taskElement = createTaskElement(taskText, taskDateTime);
 
-		const task_content_el = document.createElement('div');
-		task_content_el.classList.add('content');
+        incompleteList.appendChild(taskElement);
 
-		task_el.appendChild(task_content_el);
+        input.value = '';
+    });
 
-		const task_input_el = document.createElement('input');
-		task_input_el.classList.add('text');
-		task_input_el.type = 'text';
-		task_input_el.value = task;
-		task_input_el.setAttribute('readonly', 'readonly');
+    function createTaskElement(text, dateTime, description) {
+        const taskElement = document.createElement('div');
+        taskElement.classList.add('task');
 
-		task_content_el.appendChild(task_input_el);
+        const taskContentElement = document.createElement('div');
+        taskContentElement.classList.add('content');
 
-		const task_actions_el = document.createElement('div');
-		task_actions_el.classList.add('actions');
-		
-		const task_edit_el = document.createElement('button');
-		task_edit_el.classList.add('edit');
-		task_edit_el.innerText = 'Edit';
+        const taskDescriptionElement = document.createElement('p');
+        taskDescriptionElement.classList.add('description');
+        taskDescriptionElement.textContent = description;
 
-		const task_delete_el = document.createElement('button');
-		task_delete_el.classList.add('delete');
-		task_delete_el.innerText = 'Delete';
+        const taskTextElement = document.createElement('input');
+        taskTextElement.classList.add('text');
+        taskTextElement.type = 'text';
+        taskTextElement.value = text;
+        taskTextElement.setAttribute('readonly', 'readonly');
 
-		task_actions_el.appendChild(task_edit_el);
-		task_actions_el.appendChild(task_delete_el);
+        const taskDateTimeElement = document.createElement('span');
+        taskDateTimeElement.classList.add('task-datetime');
+        taskDateTimeElement.textContent = `Date and Time: ${dateTime}`;
 
-		task_el.appendChild(task_actions_el);
+        taskContentElement.appendChild(taskDescriptionElement);
+        taskContentElement.appendChild(taskTextElement);
+        taskContentElement.appendChild(taskDateTimeElement);
 
-		list_el.appendChild(task_el);
+        const taskActionsElement = document.createElement('div');
+        taskActionsElement.classList.add('actions');
 
-		input.value = '';
+        const taskCompleteButton = document.createElement('button');
+        taskCompleteButton.classList.add('complete');
+        taskCompleteButton.innerText = 'Complete';
 
-		task_edit_el.addEventListener('click', (e) => {
-			if (task_edit_el.innerText.toLowerCase() == "edit") {
-				task_edit_el.innerText = "Save";
-				task_input_el.removeAttribute("readonly");
-				task_input_el.focus();
-			} else {
-				task_edit_el.innerText = "Edit";
-				task_input_el.setAttribute("readonly", "readonly");
-			}
-		});
+        const taskDeleteButton = document.createElement('button');
+        taskDeleteButton.classList.add('delete');
+        taskDeleteButton.innerText = 'Delete';
 
-		task_delete_el.addEventListener('click', (e) => {
-			list_el.removeChild(task_el);
-		});
-	});
+        taskActionsElement.appendChild(taskCompleteButton);
+        taskActionsElement.appendChild(taskDeleteButton);
+
+        taskElement.appendChild(taskContentElement);
+        taskElement.appendChild(taskActionsElement);
+
+        // Event listeners for completing and deleting tasks
+        taskCompleteButton.addEventListener('click', () => {
+            incompleteList.removeChild(taskElement);
+            completedList.appendChild(taskElement);
+        });
+
+        taskDeleteButton.addEventListener('click', () => {
+            taskElement.parentNode.removeChild(taskElement);
+        });
+
+        return taskElement;
+    }
 });

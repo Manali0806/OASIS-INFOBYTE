@@ -154,3 +154,107 @@ main {
 .task .actions .delete {
 	color: crimson;
 }
+
+/* Add styles for Incomplete Tasks */
+#incomplete-tasks {
+    background-color: var(--darkest);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+#incomplete-tasks h3 {
+    color: var(--light);
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+/* Add styles for Completed Tasks */
+#completed-tasks {
+    background-color: var(--darkest);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+#completed-tasks h3 {
+    color: var(--light);
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+/* Style the task elements */
+.task {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--dark);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.task .content {
+    flex: 1 1 0%;
+}
+
+.task .description {
+    color: var(--grey);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.task .text {
+    color: var(--light);
+    font-size: 1.125rem;
+    width: 100%;
+    display: block;
+    transition: 0.4s;
+}
+
+.task .text:not(:read-only) {
+    color: var(--pink);
+}
+
+.task .task-datetime {
+    color: var(--grey);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.task .actions {
+    display: flex;
+    margin: 0 -0.5rem;
+}
+
+.task .actions button {
+    cursor: pointer;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: 0.4s;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.task .actions button:hover {
+    opacity: 0.8;
+}
+
+.task .actions button:active {
+    opacity: 0.6;
+}
+
+.task .actions .complete {
+    background-color: var(--pink);
+    color: var(--light);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.task .actions .delete {
+    color: crimson;
+}
