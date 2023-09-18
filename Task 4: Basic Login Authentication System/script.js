@@ -1,4 +1,5 @@
 const users = [];
+let currentUser = null; // To keep track of the current user
 
 function login() {
     const usernameInput = document.getElementById("username").value;
@@ -9,6 +10,7 @@ function login() {
     
     if (user) {
         // Successful login
+        currentUser = user; // Set the current user
         messageDiv.innerHTML = "Login successful!";
         messageDiv.style.color = "green";
         setTimeout(() => {
@@ -39,4 +41,12 @@ function register() {
         messageDiv.innerHTML = "Username is already taken.";
         messageDiv.style.color = "red";
     }
-}
+  }
+
+    function logout() {
+      currentUser = null; // Clear the current user
+      window.location.href = "index.html"; // Redirect to the login page
+  }
+
+  
+
