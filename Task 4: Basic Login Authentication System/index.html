@@ -7,22 +7,26 @@
     <title>Login Authentication System</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Login Authentication System</h1>
-        <div id="login-form">
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="login()">Login</button>
+    <div class="center-container">
+        <div class="container">
+            <h1>Login Authentication System</h1>
+            <br>
+            <h2>Register</h2>
+            <div id="registration-form">
+                <input type="text" id="new-username" placeholder="New Username">
+                <input type="password" id="new-password" placeholder="New Password">
+                <button onclick="register()">Register</button>
+            </div>
+            <hr>
+            <br>
+            <h2>Login</h2>
+            <div id="login-form">
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="login()">Login</button>
+            </div>
+            <div id="message"></div>
         </div>
-        <hr>
-        <br>
-        <h2>Register</h2>
-        <div id="registration-form">
-            <input type="text" id="new-username" placeholder="New Username">
-            <input type="password" id="new-password" placeholder="New Password">
-            <button onclick="register()">Register</button>
-        </div>
-        <div id="message"></div>
     </div>
     <script src="script.js"></script>
 </body>
