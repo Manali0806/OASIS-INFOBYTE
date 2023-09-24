@@ -51,3 +51,13 @@ clear.addEventListener("click", () => {
 erase.addEventListener("click", () => {
   input.value = input.value.substr(0, input.value.length - 1);
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector(".display").classList.add("visible");
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".buttons input[type='button']").forEach(function(button) {
+    button.classList.add("loaded");
+  });
+});
