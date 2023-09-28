@@ -1,5 +1,4 @@
-import React from "react";
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,13 +9,27 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
-
 import { auth } from "../firebase";
 
 const userAuthContext = createContext();
 
 const UserAuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null); // Initialize user as null initially
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  // Add a function to check if a user is authenticated
+  function isAuthenticated() {
+    return user !== null;
+  }
+
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -58,7 +71,7 @@ const UserAuthContextProvider = ({ children }) => {
 
   return (
     <userAuthContext.Provider
-      value={{ user, signUp, logIn, googleSignIn, setUpRecaptcha, logOut }}
+      value={{ user, isAuthenticated, signUp, logIn, googleSignIn, logOut }}
     >
       {children}
     </userAuthContext.Provider>
